@@ -42,7 +42,6 @@ jobs:
         git clone https://github.com/snowwolf725/AnyKernel3 -b oneplus7 --depth=1
         rm -rf AnyKernel3/.git
         
-
     - name: Checkout Android 11 kernel source
       run: |
         rm -rf kernel
@@ -65,6 +64,10 @@ jobs:
        make $KERNEL_CMDLINE CC="ccache clang-14" -j$(nproc --all)
        cp out/arch/arm64/boot/Image ../AnyKernel3
        cd ..
+    - name: Create AK3 zip for android 11
+      run: |
+       zip OP7-OOS11-kernel-SU-${{ steps.get_version.outputs.VERSION }}.zip AnyKernel3/*
+
 	   
     - name: Upload Kernel-SU
       uses: actions/upload-artifact@v4
