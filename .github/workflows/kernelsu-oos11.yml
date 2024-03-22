@@ -67,12 +67,6 @@ jobs:
     - name: Create AK3 zip for android 11
       run: |
        zip OP7-OOS11-kernel-SU-${{ steps.get_version.outputs.VERSION }}.zip AnyKernel3/*
-
-    - name: Upload Kernel-SU
-      uses: actions/upload-artifact@v1
-      with:
-        name: OP7-OOS11-kernel-SU-${{ steps.get_version.outputs.VERSION }}
-        path: "AnyKernel3/*"
         
     - name: Upload to Release
       uses: softprops/action-gh-release@v1
