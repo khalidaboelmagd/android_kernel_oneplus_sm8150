@@ -73,5 +73,20 @@ jobs:
       with:
         name: OP7-OOS11-kernel-SU-${{ steps.get_version.outputs.VERSION }}
         path: "AnyKernel3/*"
- 
-        
+    - name: Upload to Release
+      uses: softprops/action-gh-release@v4
+      with:
+        files: |
+          OP7-OOS10-kernel-SU-${{ steps.get_version.outputs.VERSION }}.zip
+          OP7-OOS11-kernel-SU-${{ steps.get_version.outputs.VERSION }}.zip
+          OP7-OOS12-kernel-SU-${{ steps.get_version.outputs.VERSION }}.zip
+          OP7-LOS20-kernel-SU-${{ steps.get_version.outputs.VERSION }}.zip
+          OP7-LOS21-kernel-SU-${{ steps.get_version.outputs.VERSION }}.zip
+        name: OnePlus7_kernelsu-${{ steps.get_version.outputs.VERSION }}
+        tag_name: ${{ steps.get_version.outputs.VERSION }}
+        body: |
+          Device: Oneplus 7/Oneplus 7Pro/Oneplus 7T/Oneplus 7TPro
+          Target: OOS10, OOS11, OOS12, LOS20,  LOS21
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
