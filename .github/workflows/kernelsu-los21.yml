@@ -39,12 +39,12 @@ jobs:
         sudo apt install binutils make python3 libssl-dev build-essential bc  bison flex unzip libssl-dev ca-certificates xz-utils mkbootimg cpio device-tree-compiler git git-lfs -y
         git clone https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-android-4.9 aarch64 --depth=1
         git clone https://github.com/grm34/proton-clang -b ZenMaxBuilder clang --depth=1
-        git clone https://github.com/snowwolf725/AnyKernel3 -b oneplus7 --depth=1
+        git clone https://github.com/khalidaboelmagd/AnyKernel3 -b oneplus7 --depth=1
         rm -rf AnyKernel3/.git
         
     - name: Checkout Android 10 kernel source
       run: |
-        git clone --recurse-submodules https://github.com/snowwolf725/android_kernel_oneplus_sm8150 -b oneplus/OOS_SM8150_10.0 --depth=1 kernel
+        git clone --recurse-submodules https://github.com/khalidaboelmagd/android_kernel_oneplus_sm8150 -b oneplus/OOS_SM8150_10.0 --depth=1 kernel
     - name: Get Version
       id: get_version
       run: |
@@ -75,7 +75,7 @@ jobs:
     - name: Checkout Android 11 kernel source
       run: |
         rm -rf kernel
-        git clone --recurse-submodules https://github.com/snowwolf725/android_kernel_oneplus_sm8150 -b oneplus/OOS_SM8150_11.0 --depth=1 kernel
+        git clone --recurse-submodules https://github.com/khalidaboelmagd/android_kernel_oneplus_sm8150 -b oneplus/OOS_SM8150_11.0 --depth=1 kernel
         cd kernel/KernelSU
         git pull
         cd ../../
@@ -101,7 +101,7 @@ jobs:
     - name: Checkout Android 12 kernel source
       run: |
         rm -rf kernel
-        git clone --recurse-submodules https://github.com/snowwolf725/android_kernel_oneplus_sm8150 -b oneplus/OOS_SM8150_12.0 --depth=1 kernel
+        git clone --recurse-submodules https://github.com/khalidaboelmagd/android_kernel_oneplus_sm8150 -b oneplus/OOS_SM8150_12.0 --depth=1 kernel
         cd kernel/KernelSU
         git pull
         cd ../../
@@ -127,7 +127,7 @@ jobs:
     - name: Checkout Android 13 kernel source
       run: |
         rm -rf kernel
-        git clone --recurse-submodules https://github.com/snowwolf725/android_kernel_oneplus_sm8150 -b oneplus/LOS_SM8150_13.0 --depth=1 kernel
+        git clone --recurse-submodules https://github.com/khalidaboelmagd/android_kernel_oneplus_sm8150 -b oneplus/LOS_SM8150_13.0 --depth=1 kernel
         cd kernel/KernelSU
         git pull
         cd ../../
@@ -157,7 +157,7 @@ jobs:
     - name: Checkout Android 14 kernel source
       run: |
         rm -rf kernel
-        git clone --recurse-submodules https://github.com/snowwolf725/android_kernel_oneplus_sm8150 -b oneplus/LOS_SM8150_14.0 --depth=1 kernel
+        git clone --recurse-submodules https://github.com/khalidaboelmagd/android_kernel_oneplus_sm8150 -b oneplus/LOS_SM8150_14.0 --depth=1 kernel
         cd kernel/KernelSU
         git pull
         cd ../../
