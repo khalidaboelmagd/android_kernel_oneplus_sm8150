@@ -64,18 +64,4 @@ jobs:
        make $KERNEL_CMDLINE CC="ccache clang-14" -j$(nproc --all)
        cp out/arch/arm64/boot/Image ../AnyKernel3
        cd ..
-    - name: Create AK3 zip for android 11
-      run: |
-       zip OP7-OOS11-kernel-SU-${{ steps.get_version.outputs.VERSION }}.zip AnyKernel3/*
-    - name: Upload to Release
-      uses: softprops/action-gh-release@v1
-      with:
-        files: |
-          OP7-OOS11-kernel-SU-${{ steps.get_version.outputs.VERSION }}.zip
-        name: OnePlus7_kernelsu-${{ steps.get_version.outputs.VERSION }}
-        tag_name: ${{ steps.get_version.outputs.VERSION }}
-        body: |
-          Device: Oneplus 7/Oneplus 7Pro/Oneplus 7T/Oneplus 7TPro
-          Target: OOS11
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
