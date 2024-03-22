@@ -56,7 +56,14 @@ jobs:
         git rev-list --count HEAD
         echo "VERSION=$(expr $(git rev-list --count HEAD) + 10200)" >> $GITHUB_OUTPUT
         cd ..
-    - name: Build Kernel
+   - name: Checkout Android 11 kernel source
+      run: |
+        rm -rf kernel
+        git clone --recurse-submodules https://github.com/snowwolf725/android_kernel_oneplus_sm8150 -b oneplus/OOS_SM8150_11.0 --depth=1 kernel
+        cd kernel/KernelSU
+        git pull
+        cd ../../
+    - name: Setup OOS 11
       run: |
        export KERNEL_DEFCONFIG="blu_spark_defconfig"
        export KERNEL_CMDLINE="ARCH=arm64 CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE=aarch64-linux-androidkernel- CROSS_COMPILE_ARM32=arm-linux-gnueabi- LLVM=1 LLVM_IAS=1 O=out"
@@ -70,6 +77,10 @@ jobs:
        make $KERNEL_CMDLINE CC="ccache clang-14" $KERNEL_DEFCONFIG
        make $KERNEL_CMDLINE CC="ccache clang-14" -j$(nproc --all)
        cp out/arch/arm64/boot/Image ../AnyKernel3
+       cd ..
+    - name: Create AK3 zip for android 11
+      run: |
+       zip OP7-OOS11-kernel-SU-${{ steps.get_version.outputs.VERSION }}.zip AnyKernel3/*
     - name: Upload Kernel-SU
       uses: actions/upload-artifact@v4
       with:
