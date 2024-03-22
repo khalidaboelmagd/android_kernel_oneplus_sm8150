@@ -64,17 +64,30 @@ jobs:
         cd ..
     - name: Build Kernel
       run: |
+       export KERNEL_DEFCONFIG="blu_spark_defconfig"
+       export KERNEL_CMDLINE="ARCH=arm64 CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE=aarch64-linux-androidkernel- CROSS_COMPILE_ARM32=arm-linux-gnueabi- LLVM=1 LLVM_IAS=1 O=out"
        export PATH=$(pwd)/clang/bin/:$(pwd)/aarch64/bin/:$PATH
        export ARCH=arm64
        export SUBARCH=arm64
        export LD=ld.lld
        export BRAND_SHOW_FLAG=oneplus
        export TARGET_PRODUCT=msmnile
-       make $KERNEL_CMDLINE $KERNEL_DEFCONFIG CC="ccache clang-14"
+       cd kernel
+       make $KERNEL_CMDLINE CC="ccache clang-14" $KERNEL_DEFCONFIG
        make $KERNEL_CMDLINE CC="ccache clang-14" -j$(nproc --all)
-       cp out/arch/arm64/boot/Image AnyKernel3
-    - name: Upload Kernel-SU
-      uses: actions/upload-artifact@v4
+       cp out/arch/arm64/boot/Image ../AnyKernel3
+  - name: Create AK3 zip for android 11
+      run: |
+       zip OP7-OOS11-kernel-SU-${{ steps.get_version.outputs.VERSION }}.zip AnyKernel3/*
+       - name: Upload to Release
+      uses: softprops/action-gh-release@v1
       with:
-        name: OP7-OOS11-kernel-SU-${{ steps.get_version.outputs.VERSION }}
-        path: "AnyKernel3/*"
+        files: |
+          OP7-OOS11-kernel-SU-${{ steps.get_version.outputs.VERSION }}.zip
+        name: OnePlus7_kernelsu-${{ steps.get_version.outputs.VERSION }}
+        tag_name: ${{ steps.get_version.outputs.VERSION }}
+        body: |
+          Device: Oneplus 7/Oneplus 7Pro/Oneplus 7T/Oneplus 7TPro
+          Target: OOS11
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
