@@ -73,8 +73,9 @@ jobs:
       with:
         name: OP7-OOS11-kernel-SU-${{ steps.get_version.outputs.VERSION }}
         path: "AnyKernel3/*"
+        
     - name: Upload to Release
-      uses: softprops/action-gh-release@v4
+      uses: softprops/action-gh-release@v1
       with:
         files: |
           OP7-OOS11-kernel-SU-${{ steps.get_version.outputs.VERSION }}.zip
