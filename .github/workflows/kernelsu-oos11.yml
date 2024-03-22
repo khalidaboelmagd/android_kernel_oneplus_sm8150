@@ -72,7 +72,6 @@ jobs:
       with:
         files: |
           OP7-OOS11-kernel-SU-${{ steps.get_version.outputs.VERSION }}.zip
-
         name: OnePlus7_kernelsu-${{ steps.get_version.outputs.VERSION }}
         tag_name: ${{ steps.get_version.outputs.VERSION }}
         body: |
