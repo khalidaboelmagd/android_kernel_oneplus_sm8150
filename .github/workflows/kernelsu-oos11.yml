@@ -76,7 +76,6 @@ jobs:
        make $KERNEL_CMDLINE CC="ccache clang-14" $KERNEL_DEFCONFIG
        make $KERNEL_CMDLINE CC="ccache clang-14" -j$(nproc --all)
        cp out/arch/arm64/boot/Image ../AnyKernel3
-       cd ..
     - name: Upload Kernel-SU
       uses: actions/upload-artifact@v4
       with:
