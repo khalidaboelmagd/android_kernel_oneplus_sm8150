@@ -41,7 +41,10 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt-get update -y 
-        sudo apt install -y lld clang-14 gcc-arm-linux-gnueabi gcc-aarch64-linux-gnu binutils make python3 libssl-dev build-essential bc bison flex unzip ca-certificates xz-utils mkbootimg cpio device-tree-compiler git git-lfs
+        sudo apt install gcc-aarch64-linux-gnu -y
+        sudo apt install gcc-arm-linux-gnueabi -y
+        sudo apt install clang-14 -y
+        sudo apt install binutils make python3 libssl-dev build-essential bc  bison flex unzip libssl-dev ca-certificates xz-utils mkbootimg cpio device-tree-compiler git git-lfs -y
         git clone https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-android-4.9 aarch64 --depth=1
         git clone https://github.com/khalidaboelmagd/AnyKernel3
         rm -rf AnyKernel3/.git
@@ -64,7 +67,6 @@ jobs:
        export LD=ld.lld
        export BRAND_SHOW_FLAG=oneplus
        export TARGET_PRODUCT=msmnile
-       export EXTRA_CFLAGS="-Wno-deprecated-declarations"
        #curl -LSs "https://raw.githubusercontent.com/rifsxd/KernelSU-Next/next-susfs/kernel/setup.sh" | bash -s next-susfs
        make $KERNEL_CMDLINE $KERNEL_DEFCONFIG CC="ccache clang-14"
        make $KERNEL_CMDLINE -j$(nproc --all) CC="ccache clang-14"
