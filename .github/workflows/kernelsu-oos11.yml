@@ -8,7 +8,7 @@ on:
     branches:
       - oneplus/OOS_SM8150_11.0
   pull_request:
-    branches:
+      branches:
       - oneplus/OOS_SM8150_11.0
 
 jobs:
@@ -27,17 +27,15 @@ jobs:
       with:
         submodules: 'true'
         fetch-depth: 1
-
     - name: Set up ccache
       uses: hendrikmuhs/ccache-action@v1.2
-
+      
     - name: Remove unnecessary files
       run: |
         sudo rm -rf /opt/ghc
         sudo rm -rf "/usr/local/share/boost"
         sudo rm -rf /usr/share/dotnet
         sudo rm -rf "$AGENT_TOOLSDIRECTORY"
-
     - name: Install dependencies
       run: |
         sudo apt-get update -y 
@@ -46,9 +44,15 @@ jobs:
         sudo apt install clang-14 -y
         sudo apt install binutils make python3 libssl-dev build-essential bc  bison flex unzip libssl-dev ca-certificates xz-utils mkbootimg cpio device-tree-compiler git git-lfs -y
         git clone https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-android-4.9 aarch64 --depth=1
+        # git clone https://github.com/snowwolf725/AnyKernel3 -b oneplus7 --depth=1
         git clone https://github.com/khalidaboelmagd/AnyKernel3
         rm -rf AnyKernel3/.git
-
+    - name: Remove unnecessary files
+      run: |
+        sudo rm -rf /opt/ghc
+        sudo rm -rf "/usr/local/share/boost"
+        sudo rm -rf /usr/share/dotnet
+        sudo rm -rf "$AGENT_TOOLSDIRECTORY"
     - name: Get Version
       id: get_version
       run: |
@@ -58,7 +62,6 @@ jobs:
         git rev-list --count HEAD
         echo "VERSION=$(expr $(git rev-list --count HEAD) + 10200)" >> $GITHUB_OUTPUT
         cd ..
-
     - name: Build KernelSU-Next
       run: |
        export PATH=$(pwd)/clang/bin/:$(pwd)/aarch64/bin/:$PATH
@@ -68,16 +71,15 @@ jobs:
        export BRAND_SHOW_FLAG=oneplus
        export TARGET_PRODUCT=msmnile
        #curl -LSs "https://raw.githubusercontent.com/rifsxd/KernelSU-Next/next-susfs/kernel/setup.sh" | bash -s next-susfs
+       #curl -LSs "https://raw.githubusercontent.com/rifsxd/KernelSU-Next/next-susfs/kernel/setup.sh" | bash -s next
        make $KERNEL_CMDLINE $KERNEL_DEFCONFIG CC="ccache clang-14"
-       make $KERNEL_CMDLINE -j$(nproc --all) CC="ccache clang-14"
+       make $KERNEL_CMDLINE CC="ccache clang-14" -j$(nproc --all)
        cp out/arch/arm64/boot/Image AnyKernel3
-
     - name: Create AK3 zip for android 11
       run: |
        cd AnyKernel3
        zip -r ../OP7-OOS11-KernelSU-Next-${{ steps.get_version.outputs.VERSION }}.zip *
        cd ..
-
     - name: Upload to Release
       uses: softprops/action-gh-release@v2
       with:
@@ -88,3 +90,5 @@ jobs:
         body: |
           Device: Oneplus 7/Oneplus 7Pro/Oneplus 7T/Oneplus 7TPro
           Target:OOS11
+      env:
+        GITHUB_TOKEN: ${{ secrets.GH_PAT }}
