@@ -72,7 +72,7 @@ jobs:
        export TARGET_PRODUCT=msmnile
        curl -LSs "https://raw.githubusercontent.com/rifsxd/KernelSU-Next/next-susfs/kernel/setup.sh" | bash -s next-susfs
        export EXTRA_CFLAGS="-Wno-deprecated-declarations"
-       make $KERNEL_CMDLINE $KERNEL_DEFCONFIG EXTRA_CFLAGS="$EXTRA_CFLAGS"
+       make $KERNEL_CMDLINE $KERNEL_DEFCONFIG CC="ccache clang-14" EXTRA_CFLAGS="$EXTRA_CFLAGS"
        make $KERNEL_CMDLINE CC="ccache clang-14" -j$(nproc --all) EXTRA_CFLAGS="$EXTRA_CFLAGS"
        cp out/arch/arm64/boot/Image AnyKernel3
 
