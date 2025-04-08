@@ -66,8 +66,8 @@ jobs:
        export TARGET_PRODUCT=msmnile
        export EXTRA_CFLAGS="-Wno-deprecated-declarations"
        curl -LSs "https://raw.githubusercontent.com/rifsxd/KernelSU-Next/next-susfs/kernel/setup.sh" | bash -s next-susfs
-       make $KERNEL_CMDLINE $KERNEL_DEFCONFIG EXTRA_CFLAGS="$EXTRA_CFLAGS"
-       make $KERNEL_CMDLINE -j$(nproc --all) EXTRA_CFLAGS="$EXTRA_CFLAGS"
+       make $KERNEL_CMDLINE $KERNEL_DEFCONFIG CC="ccache clang-14" EXTRA_CFLAGS="$EXTRA_CFLAGS"
+       make $KERNEL_CMDLINE -j$(nproc --all) CC="ccache clang-14" EXTRA_CFLAGS="$EXTRA_CFLAGS"
        cp out/arch/arm64/boot/Image AnyKernel3
 
     - name: Create AK3 zip for android 11
