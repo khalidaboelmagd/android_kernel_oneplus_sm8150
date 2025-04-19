@@ -1,15 +1,15 @@
 name: Build OnePlus-Sm8150-Kernel-OOS11
 on:
   workflow_dispatch:
-  schedule:
+  #schedule:
       # Run once a week on Sunday at midnight. See http://crontab.guru
-      - cron: '0 21 * * *'
-  push:
-    branches:
-      - oneplus/OOS_SM8150_11.0
-  pull_request:
-      branches:
-      - oneplus/OOS_SM8150_11.0
+      #- cron: '0 21 * * *'
+  #push:
+    #branches:
+      #- oneplus/OOS_SM8150_11.0
+  #pull_request:
+      #branches:
+      #- oneplus/OOS_SM8150_11.0
 
 jobs:
   build:
@@ -59,6 +59,7 @@ jobs:
         git rev-list --count HEAD
         echo "VERSION=$(expr $(git rev-list --count HEAD) + 10200)" >> $GITHUB_OUTPUT
         cd ..
+  
     - name: Build KernelSU-Next
       run: |
        export PATH=$(pwd)/clang/bin/:$(pwd)/aarch64/bin/:$PATH
@@ -67,8 +68,8 @@ jobs:
        export LD=ld.lld
        export BRAND_SHOW_FLAG=oneplus
        export TARGET_PRODUCT=msmnile
-       #curl -LSs "https://raw.githubusercontent.com/rifsxd/KernelSU-Next/next-susfs/kernel/setup.sh" | bash -s next-susfs
-       curl -LSs "https://raw.githubusercontent.com/rifsxd/KernelSU-Next/next-susfs/kernel/setup.sh" | bash -s next
+       curl -LSs "https://raw.githubusercontent.com/rifsxd/KernelSU-Next/next-susfs/kernel/setup.sh" | bash -s next-susfs
+       #curl -LSs "https://raw.githubusercontent.com/rifsxd/KernelSU-Next/next-susfs/kernel/setup.sh" | bash -s next
        make $KERNEL_CMDLINE $KERNEL_DEFCONFIG CC="ccache clang-14"
        make $KERNEL_CMDLINE CC="ccache clang-14" -j$(nproc --all)
        cp out/arch/arm64/boot/Image AnyKernel3
