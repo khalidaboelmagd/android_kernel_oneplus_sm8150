@@ -2,7 +2,7 @@
 VERSION = 4
 PATCHLEVEL = 14
 SUBLEVEL = 190
-EXTRAVERSION =
+EXTRAVERSION = -Build-By-Ryosume-with-love
 NAME = Petit Gorille
 
 # *DOCUMENTATION*
